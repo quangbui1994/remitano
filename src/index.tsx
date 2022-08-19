@@ -6,16 +6,19 @@ import reportWebVitals from './reportWebVitals'
 import { BrowserRouter } from 'react-router-dom'
 import { Amplify } from 'aws-amplify'
 import awsconfig from './aws-exports'
+import UserContext from './context/index'
 
 Amplify.configure(awsconfig)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </BrowserRouter>,
+  <UserContext>
+    <BrowserRouter>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </BrowserRouter>
+  </UserContext>,
 )
 
 // If you want to start measuring performance in your app, pass a function

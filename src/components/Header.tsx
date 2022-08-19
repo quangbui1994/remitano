@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Logo from '../youtube.svg'
 import { Grid, Button, TextField } from '@mui/material'
 import { Auth } from 'aws-amplify'
-
+import { useUserContext } from '../context'
 import { styled } from '@mui/material/styles'
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -20,13 +20,17 @@ const StyledButton = styled(Button)(({ theme }) => ({
 const Header: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const { setUserEmail, userEmail } = useUserContext()
 
   const login = async () => {
     try {
-      const { user } = await Auth.signUp({
+      const { user } = await Auth.signIn({
         username: email,
         password,
       })
+      setUserEmail(user.username)
+      setEmail('')
+      setPassword('')
     } catch (error: any) {
       console.log(error.message)
     }
@@ -34,45 +38,82 @@ const Header: React.FC = () => {
 
   const signup = async () => {
     try {
-      const { user } = await Auth.signIn({
+      const { user } = await Auth.signUp({
         username: email,
         password,
+        autoSignIn: {
+          enabled: true,
+        },
       })
+      setUserEmail(user.username!)
+      setEmail('')
+      setPassword('')
     } catch (error: any) {
       console.log(error.message)
     }
   }
 
+  const logout = async () => {
+    try {
+      await Auth.signOut({ global: true })
+      setUserEmail('')
+    } catch (error: any) {
+      console.log(error.message)
+    }
+  }
+
+  const shareMovie = () => {
+    console.log('share movie')
+  }
+
+  const unAuthHeader = (
+    <Grid item xs={11}>
+      <Grid container justifyContent='flex-end' component='form' padding={1}>
+        <StyledTextField
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          size='small'
+          id='outlined-required'
+          label='Email'
+        />
+        <StyledTextField
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          size='small'
+          id='outlined-password-input'
+          label='Password'
+          type='password'
+        />
+        <StyledButton onClick={login} variant='contained'>
+          Log in
+        </StyledButton>
+        <StyledButton onClick={signup} variant='contained'>
+          Sign up
+        </StyledButton>
+      </Grid>
+    </Grid>
+  )
+
+  const authHeader = (
+    <Grid item xs={11}>
+      <Grid container justifyContent='flex-end' component='form' padding={1}>
+        <p style={{ marginRight: 10 }}>Welcome {userEmail}</p>
+        <StyledButton onClick={shareMovie} variant='contained'>
+          Share a movie
+        </StyledButton>
+        <StyledButton onClick={logout} variant='contained'>
+          Logout
+        </StyledButton>
+      </Grid>
+    </Grid>
+  )
+
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} style={{ height: 75 }}>
       <Grid item xs={1}>
         <img src={Logo} alt='website-logo' />
       </Grid>
-      <Grid item xs={11}>
-        <Grid container justifyContent='flex-end' component='form' padding={1}>
-          <StyledTextField
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            size='small'
-            id='outlined-required'
-            label='Email'
-          />
-          <StyledTextField
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            size='small'
-            id='outlined-password-input'
-            label='Password'
-            type='password'
-          />
-          <StyledButton onClick={login} variant='contained'>
-            Log in
-          </StyledButton>
-          <StyledButton onClick={signup} variant='contained'>
-            Sign up
-          </StyledButton>
-        </Grid>
-      </Grid>
+      {userEmail ? authHeader : unAuthHeader}
     </Grid>
   )
 }
