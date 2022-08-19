@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-remitano-dev-195402-authRole",
+      "UnauthRoleArn": "arn:aws:iam::495933797651:role/amplify-remitano-dev-195402-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::495933797651:role/amplify-remitano-dev-195402-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-remitano-dev-195402-deployment",
+      "UnauthRoleName": "amplify-remitano-dev-195402-unauthRole",
+      "StackName": "amplify-remitano-dev-195402",
+      "StackId": "arn:aws:cloudformation:us-east-1:495933797651:stack/amplify-remitano-dev-195402/020717e0-1fbe-11ed-bcac-0ea2de218821",
+      "AmplifyAppId": "d2rfzr2hngse5m"
+    },
+    "categories": {
+      "auth": {
+        "remitanob3a6a077": {}
+      }
+    }
+  }
+}
