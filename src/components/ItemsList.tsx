@@ -5,7 +5,7 @@ import Item from './Item'
 
 const ItemsList: React.FC<{ links: Link[] }> = ({ links }) => {
   return (
-    <Stack paddingTop={8} spacing={3}>
+    <Stack paddingTop={8} spacing={3} marginBottom={5}>
       {links?.map((link) => (
         <Item key={`${link.author_name}-${link.title}`} link={link} />
       ))}

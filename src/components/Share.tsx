@@ -30,10 +30,11 @@ const Share = () => {
         thumbnail_url,
         userEmail,
       })
+      setUrl('')
       setSuccessMessage('Shared completely')
       setSuccessOpen(true)
     } catch (error: any) {
-      setError(error.message)
+      setError('There is something wrong')
       setErrOpen(true)
     }
   }
