@@ -21,8 +21,8 @@ const Share = () => {
     try {
       const {
         data: { title, author_name, thumbnail_url },
-      } = await axios.get<LinkData>(`https://www.youtube.com/oembed?url=${url}&format=json`)
-      await axios.post('https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links', {
+      } = await axios.get<LinkData>(`${process.env.REACT_APP_YOUTUBE_API}?url=${url}&format=json`)
+      await axios.post(`${process.env.REACT_APP_API_GATEWAY}/links`, {
         id: uuidv4(),
         url,
         title,

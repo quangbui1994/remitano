@@ -9,18 +9,12 @@ const Content = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
-      const data = await axios.get(
-        'https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links',
-      )
+      const data = await axios.get(`${process.env.REACT_APP_API_GATEWAY}/links`)
       setLinks(JSON.parse(data.data.body).Items)
     }
 
     fetchLinks()
   }, [])
-
-  useEffect(() => {
-    console.log(links)
-  }, [links])
 
   return (
     <Container maxWidth='sm'>
