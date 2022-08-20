@@ -17,6 +17,7 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
 const StyledButton = styled(Button)(({ theme }) => ({
   color: '#fff',
   marginRight: 10,
+  height: 40,
 }))
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -111,9 +112,13 @@ const Header: React.FC = () => {
 
   const authHeader = (
     <Grid item xs={11}>
-      <Grid container justifyContent='flex-end' component='form' padding={1}>
+      <Grid container justifyContent='flex-end' component='form' padding={1} alignItems='center'>
         <p style={{ marginRight: 10 }}>Welcome {userEmail}</p>
-        <Link to='/share'>Share a movie</Link>
+        <StyledButton variant='outlined'>
+          <Link to='/share' style={{ textDecoration: 'none', color: '#000' }}>
+            Share a movie
+          </Link>
+        </StyledButton>
         <StyledButton onClick={logout} variant='contained'>
           Logout
         </StyledButton>
