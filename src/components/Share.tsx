@@ -5,10 +5,12 @@ import axios from 'axios'
 import { useUserContext } from '../context'
 import { v4 as uuidv4 } from 'uuid'
 import { LinkData } from '../types'
+import { useNavigate } from 'react-router-dom'
 
 const Share = () => {
   const [url, setUrl] = useState<string>('')
   const { userEmail } = useUserContext()
+  const navigate = useNavigate()
 
   const share = async () => {
     try {
@@ -23,6 +25,7 @@ const Share = () => {
         thumbnail_url,
         userEmail,
       })
+      navigate('/home')
     } catch (error: any) {
       console.log(error.message)
     }
