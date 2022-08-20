@@ -1,11 +1,11 @@
-import { useState, forwardRef } from 'react'
+import { useState } from 'react'
 import Logo from '../youtube.svg'
-import { Grid, Button, TextField, Snackbar } from '@mui/material'
+import { Grid, Button, TextField } from '@mui/material'
 import { Auth } from 'aws-amplify'
 import { useUserContext } from '../context'
 import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
-import MuiAlert, { AlertProps } from '@mui/material/Alert'
+import Popup from './Popup'
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -19,10 +19,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   marginRight: 10,
   height: 40,
 }))
-
-const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
-})
 
 const Header: React.FC = () => {
   const [email, setEmail] = useState<string>('')
@@ -132,16 +128,14 @@ const Header: React.FC = () => {
         <img src={Logo} alt='website-logo' />
       </Grid>
       {userEmail ? authHeader : unAuthHeader}
-      <Snackbar open={errOpen} autoHideDuration={6000} onClose={() => setErrOpen(false)}>
-        <Alert onClose={() => setErrOpen(false)} severity='error' sx={{ width: '100%' }}>
-          {error}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={successOpen} autoHideDuration={6000} onClose={() => setSuccessOpen(false)}>
-        <Alert onClose={() => setSuccessOpen(false)} severity='success' sx={{ width: '100%' }}>
-          {successMesssage}
-        </Alert>
-      </Snackbar>
+      <Popup
+        setSuccessOpen={setSuccessOpen}
+        successOpen={successOpen}
+        errOpen={errOpen}
+        setErrOpen={setErrOpen}
+        error={error}
+        successMesssage={successMesssage}
+      />
     </Grid>
   )
 }
