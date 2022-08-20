@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import Logo from '../youtube.svg'
-import { Grid, Button, TextField } from '@mui/material'
+import { Grid, Button, TextField, Snackbar } from '@mui/material'
 import { Auth } from 'aws-amplify'
 import { useUserContext } from '../context'
 import { styled } from '@mui/material/styles'
 import { Link } from 'react-router-dom'
+import MuiAlert, { AlertProps } from '@mui/material/Alert'
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -18,10 +19,18 @@ const StyledButton = styled(Button)(({ theme }) => ({
   marginRight: 10,
 }))
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
+})
+
 const Header: React.FC = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const { setUserEmail, userEmail } = useUserContext()
+  const [errOpen, setErrOpen] = useState<boolean>(false)
+  const [successOpen, setSuccessOpen] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
+  const [successMesssage, setSuccessMessage] = useState<string>('')
 
   const login = async () => {
     try {
@@ -32,8 +41,11 @@ const Header: React.FC = () => {
       setUserEmail(user.username)
       setEmail('')
       setPassword('')
+      setSuccessOpen(true)
+      setSuccessMessage('Login successfully')
     } catch (error: any) {
-      console.log(error.message)
+      setError(error.message)
+      setErrOpen(true)
     }
   }
 
@@ -49,8 +61,11 @@ const Header: React.FC = () => {
       setUserEmail(user.username)
       setEmail('')
       setPassword('')
+      setSuccessOpen(true)
+      setSuccessMessage('Signup successfully')
     } catch (error: any) {
-      console.log(error.message)
+      setError(error.message)
+      setErrOpen(true)
     }
   }
 
@@ -58,8 +73,11 @@ const Header: React.FC = () => {
     try {
       await Auth.signOut({ global: true })
       setUserEmail('')
+      setSuccessOpen(true)
+      setSuccessMessage('Signout successfully')
     } catch (error: any) {
-      console.log(error.message)
+      setError(error.message)
+      setErrOpen(true)
     }
   }
 
@@ -109,6 +127,16 @@ const Header: React.FC = () => {
         <img src={Logo} alt='website-logo' />
       </Grid>
       {userEmail ? authHeader : unAuthHeader}
+      <Snackbar open={errOpen} autoHideDuration={6000} onClose={() => setErrOpen(false)}>
+        <Alert onClose={() => setErrOpen(false)} severity='error' sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={successOpen} autoHideDuration={6000} onClose={() => setSuccessOpen(false)}>
+        <Alert onClose={() => setSuccessOpen(false)} severity='success' sx={{ width: '100%' }}>
+          {successMesssage}
+        </Alert>
+      </Snackbar>
     </Grid>
   )
 }
