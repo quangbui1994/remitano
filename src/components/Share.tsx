@@ -4,6 +4,7 @@ import Header from './Header'
 import axios from 'axios'
 import { useUserContext } from '../context'
 import { v4 as uuidv4 } from 'uuid'
+import { LinkData } from '../types'
 
 const Share = () => {
   const [url, setUrl] = useState<string>('')
@@ -11,23 +12,21 @@ const Share = () => {
 
   const share = async () => {
     try {
+      const {
+        data: { title, author_name, thumbnail_url },
+      } = await axios.get<LinkData>(`https://www.youtube.com/oembed?url=${url}&format=json`)
       await axios.put('https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links', {
         id: uuidv4(),
         url,
+        title,
+        author_name,
+        thumbnail_url,
         userEmail,
       })
     } catch (error: any) {
       console.log(error.message)
     }
   }
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      await axios.get('https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links')
-    }
-
-    fetchVideos()
-  })
 
   return (
     <Container maxWidth='md'>
