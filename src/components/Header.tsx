@@ -4,8 +4,9 @@ import { Grid, Button, TextField } from '@mui/material'
 import { Auth } from 'aws-amplify'
 import { useUserContext } from '../context'
 import { styled } from '@mui/material/styles'
+import { Link } from 'react-router-dom'
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+export const StyledTextField = styled(TextField)(({ theme }) => ({
   color: theme.palette.text.secondary,
   marginRight: 10,
   width: 130,
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
           enabled: true,
         },
       })
-      setUserEmail(user.username!)
+      setUserEmail(user.username)
       setEmail('')
       setPassword('')
     } catch (error: any) {
@@ -60,10 +61,6 @@ const Header: React.FC = () => {
     } catch (error: any) {
       console.log(error.message)
     }
-  }
-
-  const shareMovie = () => {
-    console.log('share movie')
   }
 
   const unAuthHeader = (
@@ -98,9 +95,7 @@ const Header: React.FC = () => {
     <Grid item xs={11}>
       <Grid container justifyContent='flex-end' component='form' padding={1}>
         <p style={{ marginRight: 10 }}>Welcome {userEmail}</p>
-        <StyledButton onClick={shareMovie} variant='contained'>
-          Share a movie
-        </StyledButton>
+        <Link to='/share'>Share a movie</Link>
         <StyledButton onClick={logout} variant='contained'>
           Logout
         </StyledButton>
