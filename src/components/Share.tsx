@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react'
-import { Container, Divider, Box, Button, TextField } from '@mui/material'
+import { useState } from 'react'
+import { Container, Divider, Button, TextField, Stack } from '@mui/material'
 import Header from './Header'
 import axios from 'axios'
 import { useUserContext } from '../context'
 import { v4 as uuidv4 } from 'uuid'
 import { LinkData } from '../types'
 import Popup from './Popup'
+import { useNavigate } from 'react-router-dom'
 
 const Share = () => {
   const [url, setUrl] = useState<string>('')
@@ -14,6 +15,7 @@ const Share = () => {
   const [successOpen, setSuccessOpen] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [successMesssage, setSuccessMessage] = useState<string>('')
+  const navigate = useNavigate()
 
   const share = async () => {
     try {
@@ -40,7 +42,7 @@ const Share = () => {
     <Container maxWidth='md'>
       <Header />
       <Divider variant='middle' />
-      <Box
+      <Stack
         sx={{
           width: 300,
           height: 150,
@@ -48,11 +50,9 @@ const Share = () => {
           borderRadius: 3,
           margin: '0 auto',
           marginTop: 20,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
           padding: 5,
         }}
+        spacing={1}
       >
         <TextField
           onChange={(e) => setUrl(e.target.value)}
@@ -65,7 +65,10 @@ const Share = () => {
         <Button onClick={share} variant='contained'>
           Share
         </Button>
-      </Box>
+        <Button onClick={() => navigate('/')} variant='contained'>
+          Home
+        </Button>
+      </Stack>
       <Popup
         setSuccessOpen={setSuccessOpen}
         successOpen={successOpen}

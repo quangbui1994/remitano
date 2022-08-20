@@ -125,7 +125,9 @@ const Header: React.FC = () => {
   return (
     <Grid container spacing={2} style={{ height: 75 }}>
       <Grid item xs={1}>
-        <img src={Logo} alt='website-logo' />
+        <Link to='/'>
+          <img src={Logo} alt='website-logo' />
+        </Link>
       </Grid>
       {userEmail ? authHeader : unAuthHeader}
       <Popup
