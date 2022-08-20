@@ -5,13 +5,11 @@ import axios from 'axios'
 import { useUserContext } from '../context'
 import { v4 as uuidv4 } from 'uuid'
 import { LinkData } from '../types'
-import { useNavigate } from 'react-router-dom'
 import Popup from './Popup'
 
 const Share = () => {
   const [url, setUrl] = useState<string>('')
   const { userEmail } = useUserContext()
-  const navigate = useNavigate()
   const [errOpen, setErrOpen] = useState<boolean>(false)
   const [successOpen, setSuccessOpen] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
@@ -22,7 +20,7 @@ const Share = () => {
       const {
         data: { title, author_name, thumbnail_url },
       } = await axios.get<LinkData>(`https://www.youtube.com/oembed?url=${url}&format=json`)
-      await axios.put('https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links', {
+      await axios.post('https://fu6i0unm99.execute-api.us-east-1.amazonaws.com/prod/links', {
         id: uuidv4(),
         url,
         title,
@@ -32,7 +30,6 @@ const Share = () => {
       })
       setSuccessMessage('Shared completely')
       setSuccessOpen(true)
-      navigate('/home')
     } catch (error: any) {
       setError(error.message)
       setErrOpen(true)
