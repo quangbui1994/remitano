@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from '../types'
+import ItemsList from './ItemsList'
+import { Container } from '@mui/material'
 
 const Content = () => {
   const [links, setLinks] = useState<Link[]>([])
@@ -21,11 +23,9 @@ const Content = () => {
   }, [links])
 
   return (
-    <>
-      {links?.map((link, i) => (
-        <div key={i}>{link.url}</div>
-      ))}
-    </>
+    <Container maxWidth='sm'>
+      <ItemsList links={links} />
+    </Container>
   )
 }
 

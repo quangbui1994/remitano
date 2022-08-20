@@ -25,7 +25,7 @@
     ],
     "rules": {
         "react/react-in-jsx-scope": "off",
-        "camelcase": "warn",
+        "camelcase": "off",
         "spaced-comment": [
             "error",
             "always",
