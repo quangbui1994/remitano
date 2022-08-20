@@ -6,11 +6,16 @@ import { useUserContext } from '../context'
 import { v4 as uuidv4 } from 'uuid'
 import { LinkData } from '../types'
 import { useNavigate } from 'react-router-dom'
+import Popup from './Popup'
 
 const Share = () => {
   const [url, setUrl] = useState<string>('')
   const { userEmail } = useUserContext()
   const navigate = useNavigate()
+  const [errOpen, setErrOpen] = useState<boolean>(false)
+  const [successOpen, setSuccessOpen] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
+  const [successMesssage, setSuccessMessage] = useState<string>('')
 
   const share = async () => {
     try {
@@ -25,9 +30,12 @@ const Share = () => {
         thumbnail_url,
         userEmail,
       })
+      setSuccessMessage('Shared completely')
+      setSuccessOpen(true)
       navigate('/home')
     } catch (error: any) {
-      console.log(error.message)
+      setError(error.message)
+      setErrOpen(true)
     }
   }
 
@@ -61,6 +69,14 @@ const Share = () => {
           Share
         </Button>
       </Box>
+      <Popup
+        setSuccessOpen={setSuccessOpen}
+        successOpen={successOpen}
+        errOpen={errOpen}
+        setErrOpen={setErrOpen}
+        error={error}
+        successMesssage={successMesssage}
+      />
     </Container>
   )
 }
