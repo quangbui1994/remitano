@@ -55,7 +55,7 @@ const Header: React.FC = () => {
           enabled: true,
         },
       })
-      setUserEmail(user.username)
+      setUserEmail(email)
       setEmail('')
       setPassword('')
       setSuccessOpen(true)
